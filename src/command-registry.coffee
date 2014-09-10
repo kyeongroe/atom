@@ -70,10 +70,13 @@ class CommandRegistry
 
   findCommands: ({target}) ->
     commands = []
+    console.log "NULL" unless @rootNode?
+    target = @rootNode unless @rootNode.contains(target)
     currentTarget = target
     loop
       for commandName, listeners of @listenersByCommandName
         for listener in listeners
+          console.log currentTarget unless currentTarget.webkitMatchesSelector
           if currentTarget.webkitMatchesSelector(listener.selector)
             commands.push
               name: commandName
@@ -82,7 +85,12 @@ class CommandRegistry
       break if currentTarget is @rootNode
       currentTarget = currentTarget.parentNode
 
+    console.log "found", commands
+
     commands
+
+  clear: ->
+    @listenersByCommandName = {}
 
 class CommandListener
   constructor: (@selector, @callback) ->

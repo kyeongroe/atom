@@ -25,6 +25,7 @@ atom.themes.requireStylesheet '../static/jasmine'
 fixturePackagesPath = path.resolve(__dirname, './fixtures/packages')
 atom.packages.packageDirPaths.unshift(fixturePackagesPath)
 atom.keymaps.loadBundledKeymaps()
+atom.commands.setRootNode(document.body)
 keyBindingsToRestore = atom.keymaps.getKeyBindings()
 
 $(window).on 'core:close', -> window.close()
@@ -119,6 +120,8 @@ beforeEach ->
   addCustomMatchers(this)
 
 afterEach ->
+  atom.commands.clear()
+
   atom.packages.deactivatePackages()
   atom.menu.template = []
 
